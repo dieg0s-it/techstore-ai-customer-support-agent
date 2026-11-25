@@ -82,6 +82,8 @@ Customer Message
               Gemini Embeddings
 ```
 
+![Simple Vector Store configuration](screenshots/03-vector-store.png)
+
 ## 5. Key Features
 
 - Answers questions using internal documentation.
@@ -106,6 +108,8 @@ Five initial manual functional checks were performed using the n8n chat interfac
 
 These tests are initial manual functional checks, not automated regression tests or a formal performance evaluation.
 
+![Successful agent test](screenshots/04-successful-tests.png)
+
 ## 7. Current Limitations
 
 - The agent does not connect to a real order management system.
@@ -113,13 +117,12 @@ These tests are initial manual functional checks, not automated regression tests
 - It cannot approve refunds or authorize returns.
 - Human escalation is recommended by the agent, but no ticket creation or live handoff integration is configured.
 - Simple Vector Store uses temporary in-memory storage. Data may be lost when the instance restarts.
+- The current indexing workflow combines the five policy texts into one document and assigns a shared source metadata value; per-file metadata is a planned refinement.
 - The policies are fictional and intended exclusively for demonstration.
 
 ## 8. Future Improvements
 
-The current repository includes a second iteration of the knowledge-base indexing workflow (`knowledge-base-indexing-v2.json`). The following items remain planned improvements:
-
-Planned improvements include:
+The repository includes a second iteration of the knowledge-base indexing workflow (`knowledge-base-indexing-v2.json`). The following items remain planned improvements:
 
 - Automated human handoff.
 - Integration with a customer support ticketing system.
@@ -237,9 +240,10 @@ Estas pruebas son comprobaciones funcionales iniciales, no una evaluación forma
 - No puede aprobar reembolsos ni autorizar devoluciones.
 - Recomienda la intervención humana, pero todavía no realiza escalaciones automáticas.
 - Simple Vector Store utiliza almacenamiento temporal en memoria. Los datos pueden perderse cuando se reinicia la instancia.
+- El workflow actual de indexación combina los cinco textos de políticas en un único documento y asigna un valor común al metadato de origen; conservar metadatos individuales por archivo queda como mejora pendiente.
 - Las políticas son ficticias y se utilizan exclusivamente con fines demostrativos.
 
-## 8. Mejoras futuras – Versión 2.0
+## 8. Mejoras futuras
 
 Las próximas mejoras previstas incluyen:
 
