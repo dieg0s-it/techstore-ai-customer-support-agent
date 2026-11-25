@@ -4,6 +4,12 @@
 
 [English](#english) | [Español](#español)
 
+**Repository contents:** [Knowledge base](knowledge-base/) · [n8n workflows](workflow/) · [Screenshots](screenshots/)
+
+![Knowledge Base Indexing workflow](screenshots/01-knowledge-base-indexing.png)
+
+![AI Customer Support Agent workflow](screenshots/02-customer-support-agent.png)
+
 ---
 
 # English
@@ -88,7 +94,7 @@ Customer Message
 
 ## 6. Testing and Validation
 
-Initial functional tests were performed using the n8n chat interface.
+Five initial manual functional checks were performed using the n8n chat interface. The checks cover the scenarios listed below; they are not automated regression tests.
 
 | Test scenario | Expected behaviour | Result |
 |---|---|---|
@@ -98,18 +104,20 @@ Initial functional tests were performed using the n8n chat interface.
 | Return exceptions | Avoid promising eligibility and recommend human review | Passed |
 | Unknown information | Acknowledge limitations and recommend human assistance | Passed |
 
-These tests are initial functional checks, not a formal performance evaluation.
+These tests are initial manual functional checks, not automated regression tests or a formal performance evaluation.
 
 ## 7. Current Limitations
 
 - The agent does not connect to a real order management system.
 - It cannot verify individual purchases or delivery status.
 - It cannot approve refunds or authorize returns.
-- Human escalation is recommended but not yet automated.
+- Human escalation is recommended by the agent, but no ticket creation or live handoff integration is configured.
 - Simple Vector Store uses temporary in-memory storage. Data may be lost when the instance restarts.
 - The policies are fictional and intended exclusively for demonstration.
 
-## 8. Future Improvements – Version 2.0
+## 8. Future Improvements
+
+The current repository includes a second iteration of the knowledge-base indexing workflow (`knowledge-base-indexing-v2.json`). The following items remain planned improvements:
 
 Planned improvements include:
 
