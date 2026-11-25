@@ -1,0 +1,133 @@
+{
+  "name": "TechStore – AI Customer Support Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7365dba0-7344-4171-b7cc-27f28194bf7c",
+      "name": "When chat message received"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are TechStore's AI Customer Support Assistant.\n\nYOUR ROLE:\nHelp customers with questions about:\n- Orders and deliveries.\n- Returns and refunds.\n- Product warranties.\n- Invoices and billing.\n- Complaints.\n\nLANGUAGE:\nAlways communicate in Spanish.\n\nBEHAVIOR:\n- Be polite, professional and helpful.\n- Use clear and concise language.\n- Ask questions when you need more information.\n- Never invent order information, policies or delivery dates.\n- Never confirm a refund or return without verification.\n- If you don't know the answer, clearly say so.\n- Escalate complex or sensitive cases to a human support agent.\n\nIMPORTANT:\nYou are assisting customers of a fictional company.\nNever pretend to have access to real order databases.\nYour priority is accuracy, transparency and customer satisfaction.\nSTRICT KNOWLEDGE POLICY:\n\n- Never assume or invent company policies.\n- Never provide generic industry rules as if they were TechStore policies.\n- Do not mention estimated return periods unless explicitly\n  documented in the knowledge base.\n- Do not invent warranty conditions, refund procedures or\n  delivery commitments.\n- If company information is unavailable, clearly explain\n  that you cannot verify the policy.\n- Offer to escalate the question to a human support agent.\n- Accuracy is more important than providing an immediate answer.\nSYSTEM ACCESS LIMITATIONS:\n\n- You do not have access to customer accounts or order databases.\n- Never claim that you can look up or verify an order.\n- Do not request order numbers unless an actual order lookup tool is available.\n- If verification is required, offer escalation to human support."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "245b0225-4915-402e-8ce1-32f9899fc186",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        208
+      ],
+      "id": "1d2bfb8a-fc45-40b6-8a39-1c9350fa4adf",
+      "name": "Google Gemini Chat Model"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Search the TechStore knowledge base to find official information about returns, refunds, shipping, warranties, billing and customer support. Always consult this knowledge base before answering policy-related questions. Base your answers on the retrieved documents. Never invent policies or conditions. If the information is unavailable, explain this and recommend human support.",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.4,
+      "position": [
+        592,
+        16
+      ],
+      "id": "8532dd2a-899b-4867-aae4-7e50da1c03a2",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        688,
+        224
+      ],
+      "id": "f3e3c903-749a-490c-903c-4402163bc770",
+      "name": "Embeddings Google Gemini"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "nodeGroups": [],
+  "tags": []
+}

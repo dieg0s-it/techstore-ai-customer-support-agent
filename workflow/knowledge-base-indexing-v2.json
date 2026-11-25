@@ -1,0 +1,133 @@
+{
+  "name": "TechStore – Knowledge Base Indexing v2",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6e2f8e2f-3a6f-4143-9ea9-7ee4683217d4",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.4,
+      "position": [
+        224,
+        0
+      ],
+      "id": "1f860cb6-5df3-4bfa-9869-0f5a70e7d6c9",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $('Code in JavaScript').all().map(item => item.json.text).join('\\n\\n') }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "source",
+                "value": "=techstore-knowledge-base-v1"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        272,
+        96
+      ],
+      "id": "53fe0046-3c7d-477a-8b55-7f6377d6bf3a",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "jsCode": "const documents = [\n  {\n    source: \"returns-policy.md\",\n    content: `\nTECHSTORE - RETURNS AND REFUNDS POLICY\n\nVoluntary return period: 30 calendar days from receipt.\nThis does not limit mandatory consumer rights under applicable local law.\n\nProducts should be in good condition, with accessories and original packaging when reasonably possible. Proof of purchase may be requested.\n\nCustomers must contact support, provide their order reference and reason for return, and wait for instructions. They should not send products without authorization.\n\nRefunds are reviewed after inspection. Approved refunds are issued to the original payment method. Normal processing takes 5-10 business days after approval, although payment providers may vary.\n\nDamaged or defective products must be reviewed under applicable consumer protection and warranty rules.\n\nExceptions may include misuse, missing accessories, physical damage unrelated to manufacturing and personalized products. These cases must be reviewed individually.\n\nThe AI agent cannot approve refunds or authorize returns. Disputes, defective products, delayed refunds and unclear cases must be escalated to a human representative.\n`\n  },\n  {\n    source: \"shipping-policy.md\",\n    content: `\nTECHSTORE - SHIPPING POLICY\n\nStandard shipping: estimated delivery within 3-5 business days.\nExpress shipping: estimated delivery within 1-2 business days.\n\nDelivery estimates begin after order processing and dispatch. They are estimates, not guaranteed dates.\n\nShipping costs depend on destination, shipping method and order details. The exact cost is displayed during checkout.\n\nOrders are normally processed within 1-2 business days. Processing may take longer during weekends, public holidays or periods of high demand.\n\nCustomers receive a tracking link by email after dispatch.\n\nThe AI agent has no access to order management or carrier tracking systems. It must never claim to have checked an order.\n\nDelayed, lost, damaged or incomplete deliveries must be reviewed by human support.\n\nAddress changes cannot be guaranteed after processing or dispatch.\n`\n  },\n  {\n    source: \"warranty-policy.md\",\n    content: `\nTECHSTORE - WARRANTY POLICY\n\nProducts may be covered by a manufacturer's warranty or applicable consumer protection legislation.\n\nThe exact warranty period and conditions depend on the product, manufacturer and applicable law. The AI agent must not invent warranty periods.\n\nDefective products must be reviewed by human support.\n\nA warranty review may require the order reference, product name and model, purchase date, problem description and photographs or videos.\n\nPotential exclusions include accidental damage, improper use, unauthorized modifications and normal wear and tear. These circumstances must be reviewed individually.\n\nThe AI agent cannot verify purchases, approve warranty claims, authorize repairs or replacements, or make final eligibility decisions.\n\nWarranty disputes and unclear cases must be escalated.\n`\n  },\n  {\n    source: \"billing-faq.md\",\n    content: `\nTECHSTORE - BILLING FAQ\n\nAvailable payment methods are displayed during checkout. The AI agent must not assume that every method is available for every destination or order.\n\nCustomers receive an order confirmation email after a successful purchase.\n\nIf a customer reports a charge without an order confirmation, human support must review the case.\n\nInvoices and receipts can be requested from customer support. The AI agent cannot generate invoices or access billing records.\n\nFor incorrect or duplicate charges, acknowledge the concern and offer human assistance. Never request complete payment card details.\n\nThe AI agent cannot verify transactions, determine why a payment failed, approve refunds or modify charges.\n\nDisputed payments, unexpected charges and billing corrections must be escalated.\n`\n  },\n  {\n    source: \"customer-support-faq.md\",\n    content: `\nTECHSTORE - CUSTOMER SUPPORT FAQ\n\nCustomer support assists with orders, deliveries, returns, refunds, warranties, invoices, payments, damaged products and complaints.\n\nThe AI agent can provide information from the knowledge base but has no access to individual customer accounts or order records.\n\nOrder changes and cancellations must be reviewed by human support. The AI agent must not promise that an action has been completed.\n\nWhen handling complaints, listen carefully, acknowledge concerns, remain professional and offer human escalation.\n\nIf information is unavailable, explain the limitation. Never guess or present general industry practices as official TechStore policies.\n\nNever request passwords, complete payment card numbers, security codes or authentication codes.\n\nRespond in Spanish unless the customer requests another language. Keep answers clear, friendly and concise.\n\nEscalate when a customer requests a person, an issue requires account access, a complaint needs investigation, a decision is required, or information is insufficient.\n\nThe AI agent cannot transfer conversations automatically unless an escalation tool is configured.\n`\n  }\n];\n\nreturn documents.map(doc => ({\n  json: {\n    text: doc.content,\n    source: doc.source\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        112,
+        0
+      ],
+      "id": "628e368c-6f7c-4e2f-9d58-d142331eb330",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        272,
+        208
+      ],
+      "id": "b258318d-f081-443b-8698-331ce9e496e5",
+      "name": "Embeddings Google Gemini"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "nodeGroups": [],
+  "tags": []
+}
